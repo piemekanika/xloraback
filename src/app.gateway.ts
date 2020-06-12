@@ -17,7 +17,11 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: string): void {
-    this.server.emit('msgToClient', payload);
+    this.server.emit('msgToClient', {
+      text: payload,
+      date: new Date().toISOString(),
+      author: 'anon'
+    });
   }
 
   afterInit(server: Server) {
