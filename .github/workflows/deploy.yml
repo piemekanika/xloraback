@@ -24,4 +24,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: /var/www/xlora/deploy-front.sh
+          script: /var/www/xlora/deploy-back.sh
