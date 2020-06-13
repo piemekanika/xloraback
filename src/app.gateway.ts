@@ -16,12 +16,21 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   private logger: Logger = new Logger('AppGateway');
 
   @SubscribeMessage('msgToServer')
-  handleMessage(client: Socket, payload: string): void {
-    this.server.emit('msgToClient', {
-      text: payload,
+  handleMessage(client: Socket, payload: string|any): void {
+    function uniqueId(): string {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    const message: any = {
       date: new Date().toISOString(),
-      author: 'anon'
-    });
+      text: typeof payload === 'string' ? payload : payload.text,
+      author: {
+        name: payload.author || 'anon',
+      },
+      id: uniqueId(),
+    };
+
+    this.server.emit('msgToClient', message);
   }
 
   afterInit(server: Server) {
